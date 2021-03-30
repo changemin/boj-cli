@@ -24,15 +24,11 @@ import (
 // homeCmd represents the home command
 var homeCmd = &cobra.Command{
 	Use:   "home",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "백준 WorkSpace의 홈으로 이동합니다",
+	Long:  `미작성`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("home called")
+		goHome()
 	},
 }
 
@@ -48,4 +44,8 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// homeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+func goHome() {
+	fmt.Println("Go Home")
 }

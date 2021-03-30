@@ -30,7 +30,7 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "bj",
-	Short: "백준 좋아",
+	Short: "BaekJoon-CLI",
 	Long:  `백준 문제풀이 및 파일 관리를 도와줍니다`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
