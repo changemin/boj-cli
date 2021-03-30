@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/spf13/cobra"
@@ -63,24 +64,47 @@ func parseProblem(num int) {
 	}
 	defer response.Body.Close()
 
+	prob := Problem{num: num}
+
 	doc, err := goquery.NewDocumentFromReader(response.Body)
 
-	probTitle := doc.Find("#problem_title").Text()
-	fmt.Println(probTitle)
+	prob.title = doc.Find("#problem_title").Text()
+	fmt.Println("title : " + prob.title)
 
-	probQuestion := doc.Find("#problem_description").Text()
-	fmt.Println(probQuestion)
+	prob.description = strings.TrimLeft(doc.Find("#problem_description").Text(), " ")
+	fmt.Println("description : " + prob.description)
+
+	prob.input = doc.Find("#sample-input-1").Text()
+	fmt.Println("input : " + prob.input)
+
+	prob.output = doc.Find("#sample-output-1").Text()
+	fmt.Println("output : " + prob.output)
+
+	// TODO: - table 파싱
+
+	// doc.Find("table tr td").Each(func(i int, td *goquery.Selection) {
+	// 	fmt.Println(td)
+	// })
+
+	// fmt.Println("timeLimit : " + prob.output)
+
+	// prob.memoryLimit = doc.Find("#sample-output-1").Text()
+	// fmt.Println(prob.output)
+
+	// prob.passRatio = doc.Find("#sample-output-1").Text()
+	// fmt.Println(prob.output)
 
 }
 
 type Problem struct {
+	num         int
 	title       string
 	description string
 	input       string
 	output      string
-	timeLimit   string
-	memoryLimit string
-	passRatio   string
+	// timeLimit   string
+	// memoryLimit string
+	// passRatio   string
 }
 
 func printParse() {
