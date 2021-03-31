@@ -34,7 +34,9 @@ var rootCmd = &cobra.Command{
 	Long:  `백준 문제풀이 및 파일 관리를 도와줍니다`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { fmt.Println("hello this is test") },
+	Run: func(cmd *cobra.Command, args []string) {
+		parseProblem(args)
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
