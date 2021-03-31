@@ -10,7 +10,11 @@ cd BaekJoon-CLI
 go install bj
 ```
 
-## 파일 구조
+## 활용예제
+
+```
+$ bj get 1000 1001 1002 1003 1004
+```
 
 ```
 📦WORKSPACE
@@ -27,7 +31,7 @@ go install bj
  ┗ 📜config.bj.yaml
 ```
 
-## Config
+## ~~Config 파일~~
 ```yaml
 username: {username}
 language: {language}
