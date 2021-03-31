@@ -57,5 +57,5 @@ language: {language}
 |명령어|설명|
 |:---:|:---:|
 |`bj init`|백준 WorkSpace를 생성합니다|
-|`bj [문제번호]`|문제를 Parse하여 WorkSpace안에 파일을 생성합니다|
+|`bj get [문제번호]`|문제를 Parse하여 WorkSpace안에 파일을 생성합니다|
 |`bj home`|WorkSpace의 홈으로 이동합니다.|
