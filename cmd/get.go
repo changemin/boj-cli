@@ -33,8 +33,10 @@ func parseProblem(args []string) {
 		num, err := strconv.Atoi(strProbNum)
 
 		if err != nil {
-			fmt.Println("문제 번호를 입력해주세요")
+			fmt.Printf(Green, "문제 번호 정수로 입력해주세요\n\nbj get [문제번호]")
+			os.Exit(1)
 		}
+
 		prob := Problem{num: num}
 
 		url := "https://www.acmicpc.net/problem/" + strProbNum
@@ -58,6 +60,12 @@ func parseProblem(args []string) {
 
 		prob.output = doc.Find("#sample-output-1").Text()
 		fmt.Println("output :\n" + prob.output)
+
+		path := strconv.Itoa(prob.num) + "-" + prob.title
+
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			os.Mkdir(path, os.ModePerm)
+		}
 	}
 
 	// TODO: - table 파싱
