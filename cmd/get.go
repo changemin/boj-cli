@@ -91,11 +91,11 @@ func getProbCommentString(prob Problem) string {
 	str = str + strconv.Itoa(prob.num) + "번 : " + prob.title + "\n"
 	str = str + "https://www.acmicpc.net/problem/" + strconv.Itoa(prob.num) + "\n\n"
 	str = str + "* 문제\n\n"
-	str = str + "\t" + prob.description + "\n\n"
+	str = str + prob.description + "\n\n"
 	str = str + "* 입력\n\n"
-	str = str + "\t" + prob.input + "\n\n"
+	str = str + prob.input + "\n\n"
 	str = str + "* 출력\n\n"
-	str = str + "\t" + prob.output + "\n\n"
+	str = str + prob.output + "\n\n"
 	str = str + "*/\n\n"
 	return str
 }
