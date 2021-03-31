@@ -50,26 +50,68 @@ func parseProblem(args []string) {
 
 		fmt.Println(strconv.Itoa(idx) + "Prob num : " + strconv.Itoa(prob.num))
 		prob.title = doc.Find("#problem_title").Text()
-		fmt.Println("title :\n" + prob.title)
+		fmt.Println("title : " + prob.title)
 
-		prob.description = strings.TrimLeft(doc.Find("#problem_description").Text(), " ")
-		fmt.Println("description :\n" + prob.description)
+		prob.description = strings.TrimSpace(doc.Find("#problem_description").Text())
+		fmt.Println("description : " + prob.description)
 
-		prob.input = doc.Find("#sample-input-1").Text()
-		fmt.Println("input :\n" + prob.input)
+		prob.input = strings.TrimSpace(doc.Find("#sample-input-1").Text())
+		fmt.Println("input : " + prob.input)
 
-		prob.output = doc.Find("#sample-output-1").Text()
-		fmt.Println("output :\n" + prob.output)
+		prob.output = strings.TrimSpace(doc.Find("#sample-output-1").Text())
+		fmt.Println("output : " + prob.output)
 
-		path := strconv.Itoa(prob.num) + "-" + prob.title
-
-		if _, err := os.Stat(path); os.IsNotExist(err) {
-			os.Mkdir(path, os.ModePerm)
-		}
+		makeProbDirAndFile(prob)
 	}
 
 	// TODO: - table 파싱
 }
+
+func makeProbDirAndFile(prob Problem) {
+	path := strconv.Itoa(prob.num) + "-" + prob.title
+
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		os.Mkdir(path, os.ModePerm)
+	}
+	f1, err := os.Create(path + "/" + strconv.Itoa(prob.num) + ".c")
+	if err != nil {
+		os.Exit(1)
+	}
+	defer f1.Close()
+	fmt.Fprintf(f1, getProbCommentString(prob))
+	fmt.Fprintf(f1, getLanguageDefaultPrintHello())
+}
+
+func getProbCommentString(prob Problem) string {
+	str := ""
+	str = str + "/*\n"
+	str = str + "2020-03-31\n\n"
+	str = str + "Created By {username}\n\n"
+	str = str + strconv.Itoa(prob.num) + "번 : " + prob.title + "\n"
+	str = str + "https://www.acmicpc.net/problem/" + strconv.Itoa(prob.num) + "\n\n"
+	str = str + "* 문제\n\n"
+	str = str + "\t" + prob.description + "\n\n"
+	str = str + "* 입력\n\n"
+	str = str + "\t" + prob.input + "\n\n"
+	str = str + "* 출력\n\n"
+	str = str + "\t" + prob.output + "\n\n"
+	str = str + "*/\n\n"
+	return str
+}
+
+func getLanguageDefaultPrintHello() string {
+	return `#include<stdio.h>
+
+int main() {
+	printf("Hello, World!")
+}`
+}
+
+func appendLineWithNewLine(str string, to string) string {
+	return to + str + "\n"
+}
+
+// func makeProbFile
 
 // Problem 모델
 type Problem struct {

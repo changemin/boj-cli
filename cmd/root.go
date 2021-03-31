@@ -15,7 +15,9 @@ var cfgFile string
 var rootCmd = &cobra.Command{
 	Use:   "bj",
 	Short: "BaekJoon-CLI",
-	Long:  `백준 문제풀이 및 파일 관리를 도와줍니다`,
+	Long: `백준 문제풀이 및 파일 관리를 도와줍니다
+	
+			https://github.com/Changemin/BaekJoon-CLI`,
 
 	// Run: func(cmd *cobra.Command, args []string) {
 	// 	fmt.Println("hello")
@@ -32,15 +34,12 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.bj.yaml)")
 
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	viper.SetDefault("username", "USERNAME")
+	viper.SetDefault("language", "C")
+
+	// viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("username"))
 }
 
 // initConfig reads in config file and ENV variables if set.

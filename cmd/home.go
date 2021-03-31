@@ -16,7 +16,9 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
+	"os"
+	"os/exec"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -27,25 +29,28 @@ var homeCmd = &cobra.Command{
 	Short: "백준 WorkSpace의 홈으로 이동합니다",
 	Long:  `미작성`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("home called")
-		goHome()
+		// goHome()
+		test()
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(homeCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// homeCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// homeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 func goHome() {
-	fmt.Println("Go Home")
+	home, _ := os.UserHomeDir()
+	err := os.Chdir(filepath.Join(home, "Repositories"))
+	if err != nil {
+		panic(err)
+	}
+}
+
+func test() {
+	cmd := exec.Command("cd ~")
+	cmd.Start()
+	cmd.Wait()
+	// cmd = exec.Command("sh", "-c", "echo hello,world!")
+	// stdoutStderr, _ := cmd.CombinedOutput()
+	// fmt.Println(string(stdoutStderr))
 }
