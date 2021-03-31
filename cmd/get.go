@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
@@ -10,7 +11,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// parseProblemCmd represents the parseProblem command
 var parseCmd = &cobra.Command{
 	Use:   "get",
 	Short: "문제를 다운 파싱합니다",
@@ -25,14 +25,23 @@ func init() {
 }
 
 func parseProblem(args []string) {
+	if len(args) == 0 {
+		os.Exit(1)
+	}
+	num, err := strconv.Atoi(args[0])
+
+	if err != nil {
+		fmt.Println("문제 번호를 입력해주세요")
+	}
+
+	prob := Problem{num: num}
+
 	url := "https://www.acmicpc.net/problem/" + args[0]
 	response, err := http.Get(url)
 	if err != nil {
 		panic(err)
 	}
 	defer response.Body.Close()
-	num, err := strconv.Atoi(args[0])
-	prob := Problem{num: num}
 
 	doc, err := goquery.NewDocumentFromReader(response.Body)
 
