@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/spf13/cobra"
@@ -85,7 +86,7 @@ func makeProbDirAndFile(prob Problem) {
 func getProbCommentString(prob Problem) string {
 	str := ""
 	str = str + "/*\n"
-	str = str + "2020-03-31\n\n"
+	str = str + getCurrentDate() + "\n\n"
 	str = str + "Created By {username}\n\n"
 	str = str + strconv.Itoa(prob.num) + "번 : " + prob.title + "\n"
 	str = str + "https://www.acmicpc.net/problem/" + strconv.Itoa(prob.num) + "\n\n"
@@ -109,6 +110,11 @@ int main() {
 
 func appendLineWithNewLine(str string, to string) string {
 	return to + str + "\n"
+}
+
+func getCurrentDate() string {
+	dateTime := time.Now()
+	return dateTime.Format("2006-01-02")
 }
 
 // func makeProbFile
