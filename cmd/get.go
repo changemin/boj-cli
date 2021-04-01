@@ -66,7 +66,6 @@ func parseProblem(args []string) {
 }
 
 func generateProblem(num int) {
-
 	prob := Problem{num: num}
 
 	response, err := http.Get("https://www.acmicpc.net/problem/" + strconv.Itoa(num))
@@ -76,7 +75,7 @@ func generateProblem(num int) {
 	defer response.Body.Close()
 
 	if response.StatusCode == 404 {
-		color.Error.Prompt("다음 문제는 존재 하지 않습니다(" + strconv.Itoa(prob.num) + ")")
+		color.Error.Prompt("❗다음 문제는 존재하지 않습니다(" + strconv.Itoa(prob.num) + ")")
 	} else {
 		doc, _ := goquery.NewDocumentFromReader(response.Body)
 		prob.title = doc.Find("#problem_title").Text()
