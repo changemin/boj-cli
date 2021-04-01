@@ -15,8 +15,10 @@ import (
 
 var parseCmd = &cobra.Command{
 	Use:   "get",
-	Short: "문제를 다운 파싱합니다",
-	Long:  `문제 번호를 입력(미작성)`,
+	Short: "백준 문제를 파싱하여 저장합니다.",
+	Long: `1. bj get [문제번호] : 문제번호의 문제를 가져옵니다
+2. bj get [문제번호] [문제번호] [문제번호] : 여러문제를 한번에 가져옵니다
+3. bj get [문제번호]~[문제번호] : 범위 내의 문제를 가져옵니다`,
 	Run: func(cmd *cobra.Command, args []string) {
 		parseProblem(args)
 	},
