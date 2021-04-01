@@ -49,13 +49,18 @@ func parseProblem(args []string) {
 		}
 		defer response.Body.Close()
 
-		doc, err := goquery.NewDocumentFromReader(response.Body)
-		prob.title = doc.Find("#problem_title").Text()
-		prob.description = strings.TrimSpace(doc.Find("#problem_description").Text())
-		prob.input = strings.TrimSpace(doc.Find("#sample-input-1").Text())
-		prob.output = strings.TrimSpace(doc.Find("#sample-output-1").Text())
+		if response.StatusCode == 404 {
+			color.Error.Prompt("다음 문제는 존재 하지 않습니다(" + strconv.Itoa(prob.num) + ")")
+		} else {
+			doc, _ := goquery.NewDocumentFromReader(response.Body)
+			prob.title = doc.Find("#problem_title").Text()
+			prob.description = strings.TrimSpace(doc.Find("#problem_description").Text())
+			prob.input = strings.TrimSpace(doc.Find("#sample-input-1").Text())
+			prob.output = strings.TrimSpace(doc.Find("#sample-output-1").Text())
 
-		makeProbDirAndFile(prob)
+			makeProbDirAndFile(prob)
+		}
+
 	}
 
 	// TODO: - table 파싱
@@ -105,16 +110,10 @@ int main() {
 }`
 }
 
-func appendLineWithNewLine(str string, to string) string {
-	return to + str + "\n"
-}
-
 func getCurrentDate() string {
 	dateTime := time.Now()
 	return dateTime.Format("2006-01-02")
 }
-
-// func makeProbFile
 
 // Problem 모델
 type Problem struct {
