@@ -31,39 +31,59 @@ func parseProblem(args []string) {
 		color.Error.Prompt("문제 번호를 입력해주세요")
 		color.Green.Print("\nbj get [문제번호]")
 		os.Exit(1)
-	}
-	for _, strProbNum := range args {
-		num, err := strconv.Atoi(strProbNum)
-
-		if err != nil {
-			color.Error.Prompt("문제 번호를 정수로 입력해주세요")
-			color.Green.Print("\nbj get [문제번호]")
+	} else if strings.Contains(args[0], "~") {
+		offset := strings.Split(args[0], "~")
+		if len(offset) > 2 {
+			color.Error.Prompt("정확한 범위를 입력하세요")
+			color.Green.Print("\nbj get [문제번호]~[문제번호]")
 			os.Exit(1)
 		}
-
-		prob := Problem{num: num}
-
-		response, err := http.Get("https://www.acmicpc.net/problem/" + strProbNum)
-		if err != nil {
-			panic(err)
+		startNum, _ := strconv.Atoi(offset[0])
+		endNum, _ := strconv.Atoi(offset[1])
+		if startNum > endNum {
+			color.Error.Prompt("범위는 1보다 커야 합니다.")
+			color.Green.Print("\nbj get [문제번호]~[문제번호]")
+			os.Exit(1)
 		}
-		defer response.Body.Close()
-
-		if response.StatusCode == 404 {
-			color.Error.Prompt("다음 문제는 존재 하지 않습니다(" + strconv.Itoa(prob.num) + ")")
-		} else {
-			doc, _ := goquery.NewDocumentFromReader(response.Body)
-			prob.title = doc.Find("#problem_title").Text()
-			prob.description = strings.TrimSpace(doc.Find("#problem_description").Text())
-			prob.input = strings.TrimSpace(doc.Find("#sample-input-1").Text())
-			prob.output = strings.TrimSpace(doc.Find("#sample-output-1").Text())
-
-			makeProbDirAndFile(prob)
+		for i := startNum; i <= endNum; i++ {
+			generateProblem(i)
 		}
-
+	} else {
+		for _, strProbNum := range args {
+			num, err := strconv.Atoi(strProbNum)
+			if err != nil {
+				color.Error.Prompt("문제 번호를 정수로 입력해주세요")
+				color.Green.Print("\nbj get [문제번호]")
+				os.Exit(1)
+			}
+			generateProblem(num)
+		}
 	}
 
 	// TODO: - table 파싱
+}
+
+func generateProblem(num int) {
+
+	prob := Problem{num: num}
+
+	response, err := http.Get("https://www.acmicpc.net/problem/" + strconv.Itoa(num))
+	if err != nil {
+		panic(err)
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode == 404 {
+		color.Error.Prompt("다음 문제는 존재 하지 않습니다(" + strconv.Itoa(prob.num) + ")")
+	} else {
+		doc, _ := goquery.NewDocumentFromReader(response.Body)
+		prob.title = doc.Find("#problem_title").Text()
+		prob.description = strings.TrimSpace(doc.Find("#problem_description").Text())
+		prob.input = strings.TrimSpace(doc.Find("#sample-input-1").Text())
+		prob.output = strings.TrimSpace(doc.Find("#sample-output-1").Text())
+
+		makeProbDirAndFile(prob)
+	}
 }
 
 func makeProbDirAndFile(prob Problem) {
