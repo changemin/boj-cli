@@ -13,7 +13,8 @@ go install bj
 ## 명령어
 
 |명령어|설명|
-|:---:|:---:| |`bj init`|백준 WorkSpace를 생성합니다|
+|:---:|:---:| 
+|`bj init`|백준 WorkSpace를 생성합니다|
 |`bj get [문제번호]`|문제를 Parse하여 WorkSpace안에 파일을 생성합니다|
 |`bj cp [문제번호]`|작성된 소스코드를 클립보드에 복사합니다.|
 
