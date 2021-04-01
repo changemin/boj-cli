@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/gookit/color"
 	"github.com/spf13/cobra"
 )
 
@@ -27,40 +28,32 @@ func init() {
 
 func parseProblem(args []string) {
 	if len(args) == 0 { // 문제 번호 입력을 안했을 경우
-		fmt.Printf(Green, "문제 번호를 입력해주세요\n\nbj get [문제번호]")
+		color.Error.Prompt("문제 번호를 입력해주세요")
+		color.Green.Print("\nbj get [문제번호]")
 		os.Exit(1)
 	}
-	for idx, strProbNum := range args {
+	for _, strProbNum := range args {
 		num, err := strconv.Atoi(strProbNum)
 
 		if err != nil {
-			fmt.Printf(Green, "문제 번호 정수로 입력해주세요\n\nbj get [문제번호]")
+			color.Error.Prompt("문제 번호를 정수로 입력해주세요")
+			color.Green.Print("\nbj get [문제번호]")
 			os.Exit(1)
 		}
 
 		prob := Problem{num: num}
 
-		url := "https://www.acmicpc.net/problem/" + strProbNum
-		response, err := http.Get(url)
+		response, err := http.Get("https://www.acmicpc.net/problem/" + strProbNum)
 		if err != nil {
 			panic(err)
 		}
 		defer response.Body.Close()
 
 		doc, err := goquery.NewDocumentFromReader(response.Body)
-
-		fmt.Println(strconv.Itoa(idx) + "Prob num : " + strconv.Itoa(prob.num))
 		prob.title = doc.Find("#problem_title").Text()
-		fmt.Println("title : " + prob.title)
-
 		prob.description = strings.TrimSpace(doc.Find("#problem_description").Text())
-		fmt.Println("description : " + prob.description)
-
 		prob.input = strings.TrimSpace(doc.Find("#sample-input-1").Text())
-		fmt.Println("input : " + prob.input)
-
 		prob.output = strings.TrimSpace(doc.Find("#sample-output-1").Text())
-		fmt.Println("output : " + prob.output)
 
 		makeProbDirAndFile(prob)
 	}
@@ -79,6 +72,8 @@ func makeProbDirAndFile(prob Problem) {
 		os.Exit(1)
 	}
 	defer f1.Close()
+	color.Info.Prompt("🎉 파일 생성 성공 - " + path + "/" + strconv.Itoa(prob.num) + ".c")
+
 	fmt.Fprintf(f1, getProbCommentString(prob))
 	fmt.Fprintf(f1, getLanguageDefaultPrintHello())
 }
@@ -132,14 +127,3 @@ type Problem struct {
 	// memoryLimit string
 	// passRatio   string
 }
-
-const (
-	Black   = "\033[1;30m%s\033[0m"
-	Red     = "\033[1;31m%s\033[0m"
-	Green   = "\033[1;32m%s\033[0m"
-	Yellow  = "\033[1;33m%s\033[0m"
-	Purple  = "\033[1;34m%s\033[0m"
-	Magenta = "\033[1;35m%s\033[0m"
-	Teal    = "\033[1;36m%s\033[0m"
-	White   = "\033[1;37m%s\033[0m"
-)
