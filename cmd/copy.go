@@ -28,7 +28,6 @@ func init() {
 }
 
 func copyCode2Clipboard(args []string) {
-
 	if len(args) == 0 { // 문제 번호 입력을 안했을 경우
 		color.Error.Prompt("문제 번호를 입력해주세요")
 		color.Green.Print("\nbj cp [문제번호]")

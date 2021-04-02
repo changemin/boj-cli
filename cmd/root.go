@@ -18,10 +18,6 @@ var rootCmd = &cobra.Command{
 	Long: `백준 문제풀이 및 파일 관리를 도와줍니다
 	
 			https://github.com/Changemin/BaekJoon-CLI`,
-
-	// Run: func(cmd *cobra.Command, args []string) {
-	// 	fmt.Println("hello")
-	// },
 }
 
 func Execute() {
@@ -57,7 +53,7 @@ func initConfig() {
 
 		// Search config in home directory with name ".bj" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".bj")
+		viper.SetConfigName(".BaekJoon.yml")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
