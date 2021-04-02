@@ -14,7 +14,7 @@ import (
 
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "백준 설정파일 생성합니다",
+	Short: "백준 설정파일을 생성합니다",
 	Long:  `그렇대요.. (임시)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		generateConfigFile()
