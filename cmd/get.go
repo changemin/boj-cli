@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -75,7 +77,7 @@ func generateProblem(num int) {
 	defer response.Body.Close()
 
 	if response.StatusCode == 404 {
-		color.Error.Prompt("❗다음 문제는 존재하지 않습니다(" + strconv.Itoa(prob.num) + ")")
+		color.Error.Prompt("다음 문제는 존재하지 않습니다(" + strconv.Itoa(prob.num) + ")")
 	} else {
 		doc, _ := goquery.NewDocumentFromReader(response.Body)
 		prob.title = doc.Find("#problem_title").Text()
@@ -88,20 +90,41 @@ func generateProblem(num int) {
 }
 
 func makeProbDirAndFile(prob Problem) {
-	path := strconv.Itoa(prob.num) + "-" + prob.title
+	if isProbExist(prob) {
+		color.Error.Prompt("다음 문제는 이미 존재합니다(" + strconv.Itoa(prob.num) + ")")
+	} else {
+		path := strconv.Itoa(prob.num) + "-" + prob.title
 
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		os.Mkdir(path, os.ModePerm)
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			os.Mkdir(path, os.ModePerm)
+		}
+		f1, err := os.Create(path + "/" + strconv.Itoa(prob.num) + ".c")
+		if err != nil {
+			os.Exit(1)
+		}
+		defer f1.Close()
+		color.Info.Prompt("🎉 파일 생성 성공 - " + path + "/" + strconv.Itoa(prob.num) + ".c")
+
+		fmt.Fprintf(f1, getProbCommentString(prob))
+		fmt.Fprintf(f1, getLanguageDefaultPrintHello())
 	}
-	f1, err := os.Create(path + "/" + strconv.Itoa(prob.num) + ".c")
+}
+
+func isProbExist(prob Problem) bool {
+	files, err := ioutil.ReadDir("./")
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
-	defer f1.Close()
-	color.Info.Prompt("🎉 파일 생성 성공 - " + path + "/" + strconv.Itoa(prob.num) + ".c")
 
-	fmt.Fprintf(f1, getProbCommentString(prob))
-	fmt.Fprintf(f1, getLanguageDefaultPrintHello())
+	for _, f := range files {
+		if strings.Contains(f.Name(), strconv.Itoa(prob.num)) {
+			if filerc, _ := os.Open(f.Name() + "/" + strconv.Itoa(prob.num) + ".c"); filerc != nil {
+				return true
+			}
+		}
+	}
+
+	return false
 }
 
 func getProbCommentString(prob Problem) string {
