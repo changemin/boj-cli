@@ -103,13 +103,13 @@ func makeProbDirAndFile(prob Problem) {
 			os.Mkdir(path, os.ModePerm)
 		}
 
-		f1, err := os.Create(path + "/" + strconv.Itoa(prob.num) + ".c")
+		f1, err := os.Create(path + "/solve.c")
 		if err != nil {
 			log.Print(err)
 			os.Exit(1)
 		}
 		defer f1.Close()
-		color.Info.Prompt("🎉 파일 생성 성공 - " + path + "/" + strconv.Itoa(prob.num) + ".c")
+		color.Info.Prompt("🎉 파일 생성 성공 - " + path + "/solve.c")
 
 		fmt.Fprintf(f1, getProbCommentString(prob))
 		fmt.Fprintf(f1, getLanguageDefaultPrintHello())
