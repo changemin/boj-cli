@@ -93,13 +93,19 @@ func makeProbDirAndFile(prob Problem) {
 	if isProbExist(prob) {
 		color.Error.Prompt("다음 문제는 이미 존재합니다(" + strconv.Itoa(prob.num) + ")")
 	} else {
-		path := strconv.Itoa(prob.num) + "-" + prob.title
+		if _, err := os.Stat(getStrRangeOfProb(prob.num)); os.IsNotExist(err) {
+			os.Mkdir(getStrRangeOfProb(prob.num), os.ModePerm)
+		}
+
+		path := getStrRangeOfProb(prob.num) + "/" + strconv.Itoa(prob.num) + "-" + prob.title
 
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			os.Mkdir(path, os.ModePerm)
 		}
+
 		f1, err := os.Create(path + "/" + strconv.Itoa(prob.num) + ".c")
 		if err != nil {
+			log.Print(err)
 			os.Exit(1)
 		}
 		defer f1.Close()
@@ -157,6 +163,11 @@ int main() {
 func getCurrentDate() string {
 	dateTime := time.Now()
 	return dateTime.Format("2006-01-02")
+}
+
+func getStrRangeOfProb(num int) string {
+	strNum := strconv.Itoa(num)
+	return strNum[:len(strNum)-2] + "00번~" + strNum[:len(strNum)-2] + "99번"
 }
 
 // Problem 모델
