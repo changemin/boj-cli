@@ -52,10 +52,10 @@ fibonacci(3)을 호출하면 다음과 같은 일이 일어난다.
 
 */
 
-#include<stdio.h>
+pakage main
 
-int main() {
-	printf("Hello, World!");
+import "fmt"
 
-	return 0;
+func main() {
+	fmt.Println("Hello, World!")
 }

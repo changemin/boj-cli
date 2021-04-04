@@ -20,10 +20,10 @@ https://www.acmicpc.net/problem/1000
 
 */
 
-#include<stdio.h>
+pakage main
 
-int main() {
-	printf("Hello, World!");
+import "fmt"
 
-	return 0;
+func main() {
+	fmt.Println("Hello, World!")
 }

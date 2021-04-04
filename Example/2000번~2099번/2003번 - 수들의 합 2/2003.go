@@ -21,10 +21,10 @@ N개의 수로 된 수열 A[1], A[2], …, A[N] 이 있다. 이 수열의 i번�
 
 */
 
-#include<stdio.h>
+pakage main
 
-int main() {
-	printf("Hello, World!");
+import "fmt"
 
-	return 0;
+func main() {
+	fmt.Println("Hello, World!")
 }

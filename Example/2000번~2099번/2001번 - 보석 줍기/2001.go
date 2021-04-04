@@ -36,10 +36,10 @@ n(1 ≤ n ≤ 100)개의 섬이 m(1 ≤ m ≤ 1,000)개의 다리로 연결되�
 
 */
 
-#include<stdio.h>
+pakage main
 
-int main() {
-	printf("Hello, World!");
+import "fmt"
 
-	return 0;
+func main() {
+	fmt.Println("Hello, World!")
 }

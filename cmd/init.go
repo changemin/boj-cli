@@ -50,13 +50,15 @@ func inputLanguage() string {
 	fmt.Println(`  1. C
   2. C++
   3. Java
-  4. Swift`)
-	color.Green.Print("(1~4) : ")
+  4. Swift
+  5. Go
+  6. etc`)
+	color.Green.Print("(1~6) : ")
 	input, _ := reader.ReadString('\n')
 	languageSelection, err := strconv.Atoi(strings.TrimSpace(input))
 	if err != nil {
 		log.Println(err.Error())
-		color.Error.Println("1~4 사이의 숫자를 입력해주세요")
+		color.Error.Println("1~6 사이의 숫자를 입력해주세요")
 		os.Exit(1)
 	}
 	switch languageSelection {
@@ -68,6 +70,11 @@ func inputLanguage() string {
 		return "Java"
 	case 4:
 		return "Swift"
+	case 5:
+		return "GO"
+	case 6:
+		// TODO: - asking for custom language
+		return "C"
 	default:
 		return "C"
 	}

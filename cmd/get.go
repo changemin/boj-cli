@@ -103,13 +103,13 @@ func makeProbDirAndFile(prob Problem) {
 			os.Mkdir(path, os.ModePerm)
 		}
 
-		f1, err := os.Create(path + "/" + strconv.Itoa(prob.num) + ".c")
+		f1, err := os.Create(path + "/" + strconv.Itoa(prob.num) + ".go")
 		if err != nil {
 			log.Print(err)
 			os.Exit(1)
 		}
 		defer f1.Close()
-		color.Info.Prompt("🎉 파일 생성 성공 - " + path + "/" + strconv.Itoa(prob.num) + ".c")
+		color.Info.Prompt("🎉 파일 생성 성공 - " + path + "/" + strconv.Itoa(prob.num) + ".go")
 
 		fmt.Fprintf(f1, getProbCommentString(prob))
 		fmt.Fprintf(f1, getLanguageDefaultPrintHello())
@@ -161,12 +161,20 @@ func getProbCommentString(prob Problem) string {
 }
 
 func getLanguageDefaultPrintHello() string {
-	return `#include<stdio.h>
+	// 	return `#include<stdio.h>
 
-int main() {
-	printf("Hello, World!");
+	// int main() {
+	// 	printf("Hello, World!");
 
-	return 0;
+	// 	return 0;
+	// }`
+
+	return `pakage main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello, World!")
 }`
 }
 

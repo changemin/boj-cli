@@ -20,10 +20,10 @@ $n \choose m$의 끝자리 $0$의 개수를 출력하는 프로그램을 작성�
 
 */
 
-#include<stdio.h>
+pakage main
 
-int main() {
-	printf("Hello, World!");
+import "fmt"
 
-	return 0;
+func main() {
+	fmt.Println("Hello, World!")
 }
