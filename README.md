@@ -63,6 +63,7 @@ username: {username}
 language: {language}
 ---
 
+# 아래 본문은 파일 생성시 작성되는 기본 코드
 import<stdio.h>
 
 int main() {
