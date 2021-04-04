@@ -58,8 +58,18 @@ $ bj get 1000~1100
 
 ## ~~Config 파일~~
 ```yaml
+---
 username: {username}
 language: {language}
+---
+
+import<stdio.h>
+
+int main() {
+    print("Hello World!");
+
+    return 0
+}
 ```
 
 ~~지원가능언어 : `c`, `c++` ,`swift`, `Java`~~
