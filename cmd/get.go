@@ -97,7 +97,7 @@ func makeProbDirAndFile(prob Problem) {
 			os.Mkdir(getStrRangeOfProb(prob.num), os.ModePerm)
 		}
 
-		path := getStrRangeOfProb(prob.num) + "/" + strconv.Itoa(prob.num) + "-" + prob.title
+		path := getStrRangeOfProb(prob.num) + "/" + strconv.Itoa(prob.num) + "번 - " + prob.title
 
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			os.Mkdir(path, os.ModePerm)
@@ -117,17 +117,27 @@ func makeProbDirAndFile(prob Problem) {
 }
 
 func isProbExist(prob Problem) bool {
-	files, err := ioutil.ReadDir("./")
+	rangeFolderList, err := ioutil.ReadDir("./")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	for _, f := range files {
-		if strings.Contains(f.Name(), strconv.Itoa(prob.num)) {
-			if filerc, _ := os.Open(f.Name() + "/" + strconv.Itoa(prob.num) + ".c"); filerc != nil {
-				return true
+	for _, rangeFolder := range rangeFolderList {
+		if rangeFolder.Name() == getStrRangeOfProb(prob.num) {
+			files, err := ioutil.ReadDir(getStrRangeOfProb(prob.num))
+			if err != nil {
+				log.Fatal(err)
 			}
+			for _, file := range files {
+				if strings.Contains(file.Name(), strconv.Itoa(prob.num)) {
+					if filerc, _ := os.Open(getStrRangeOfProb(prob.num) + "/" + file.Name() + "/" + strconv.Itoa(prob.num) + ".c"); filerc != nil {
+						return true
+					}
+				}
+			}
+
 		}
+
 	}
 
 	return false
