@@ -3,9 +3,7 @@ package cmd
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/gookit/color"
@@ -27,13 +25,13 @@ func init() {
 
 func generateConfigFile() {
 	username := inputUsername()
-	language := inputLanguage()
+	fileExtension := inputFileExtension()
 	f, err := os.Create(".BaekJoon.yml")
 	if err != nil {
 		fmt.Print(err)
 	}
 	defer f.Close()
-	fmt.Fprintf(f, "username: "+username+"\nlanguage: "+language)
+	fmt.Fprintf(f, "username: "+username+"\nextension: "+fileExtension)
 	color.Info.Println("설정 파일이 생성되었습니다.")
 }
 
@@ -44,39 +42,17 @@ func inputUsername() string {
 	return username
 }
 
-func inputLanguage() string {
+func inputFileExtension() string {
 	reader := bufio.NewReader(os.Stdin)
-	color.Green.Print("언어를 선택하세요\n")
-	fmt.Println(`  1. C
-  2. C++
-  3. Java
-  4. Swift
-  5. Go
-  6. etc`)
-	color.Green.Print("(1~6) : ")
-	input, _ := reader.ReadString('\n')
-	languageSelection, err := strconv.Atoi(strings.TrimSpace(input))
-	if err != nil {
-		log.Println(err.Error())
-		color.Error.Println("1~6 사이의 숫자를 입력해주세요")
-		os.Exit(1)
+	for true {
+		color.Green.Print("파일 확장자를 입력해주세요 ex) .c, .java")
+		color.Green.Print("\n>>> ")
+		input, _ := reader.ReadString('\n')
+		if strings.Contains(input, ".") {
+			return input
+		} else {
+			color.Info.Println(".c, .java 와 같은 형식이어야 합니다.")
+		}
 	}
-	switch languageSelection {
-	case 1:
-		return "C"
-	case 2:
-		return "C++"
-	case 3:
-		return "Java"
-	case 4:
-		return "Swift"
-	case 5:
-		return "GO"
-	case 6:
-		// TODO: - asking for custom language
-		return "C"
-	default:
-		return "C"
-	}
-
+	return ".c"
 }
