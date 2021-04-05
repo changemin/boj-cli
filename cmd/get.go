@@ -31,40 +31,46 @@ func init() {
 }
 
 func parseProblem(args []string) {
-	if len(args) == 0 { // 문제 번호 입력을 안했을 경우
-		color.Error.Prompt("문제 번호를 입력해주세요")
-		color.Green.Print("\nbj get [문제번호]")
-		os.Exit(1)
-	} else if strings.Contains(args[0], "~") {
-		offset := strings.Split(args[0], "~")
-		if len(offset) > 2 {
-			color.Error.Prompt("정확한 범위를 입력하세요")
-			color.Green.Print("\nbj get [문제번호]~[문제번호]")
+	if isConfigFileExist() {
+		if len(args) == 0 { // 문제 번호 입력을 안했을 경우
+			color.Error.Prompt("문제 번호를 입력해주세요")
+			color.Green.Print("\nbj get [문제번호]")
 			os.Exit(1)
-		}
-		startNum, _ := strconv.Atoi(offset[0])
-		endNum, _ := strconv.Atoi(offset[1])
-		if startNum > endNum {
-			color.Error.Prompt("범위는 1보다 커야 합니다.")
-			color.Green.Print("\nbj get [문제번호]~[문제번호]")
-			os.Exit(1)
-		}
-		for i := startNum; i <= endNum; i++ {
-			generateProblem(i)
-		}
-	} else {
-		for _, strProbNum := range args {
-			num, err := strconv.Atoi(strProbNum)
-			if err != nil {
-				color.Error.Prompt("문제 번호를 정수로 입력해주세요")
-				color.Green.Print("\nbj get [문제번호]")
+		} else if strings.Contains(args[0], "~") {
+			offset := strings.Split(args[0], "~")
+			if len(offset) > 2 {
+				color.Error.Prompt("정확한 범위를 입력하세요")
+				color.Green.Print("\nbj get [문제번호]~[문제번호]")
 				os.Exit(1)
 			}
-			generateProblem(num)
+			startNum, _ := strconv.Atoi(offset[0])
+			endNum, _ := strconv.Atoi(offset[1])
+			if startNum > endNum {
+				color.Error.Prompt("범위는 1보다 커야 합니다.")
+				color.Green.Print("\nbj get [문제번호]~[문제번호]")
+				os.Exit(1)
+			}
+			for i := startNum; i <= endNum; i++ {
+				generateProblem(i)
+			}
+		} else {
+			for _, strProbNum := range args {
+				num, err := strconv.Atoi(strProbNum)
+				if err != nil {
+					color.Error.Prompt("문제 번호를 정수로 입력해주세요")
+					color.Green.Print("\nbj get [문제번호]")
+					os.Exit(1)
+				}
+				generateProblem(num)
+			}
 		}
+
+		// TODO: - table 파싱
+	} else {
+		color.Error.Println("설정 파일이 존재하지 않습니다.")
+		color.Info.Println("\nbj init 명령어로 파일을 생성하세요")
 	}
 
-	// TODO: - table 파싱
 }
 
 func generateProblem(num int) {
@@ -179,6 +185,19 @@ func getCurrentDate() string {
 func getStrRangeOfProb(num int) string {
 	strNum := strconv.Itoa(num)
 	return strNum[:len(strNum)-2] + "00번~" + strNum[:len(strNum)-2] + "99번"
+}
+
+func isConfigFileExist() bool {
+	files, err := ioutil.ReadDir("./")
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, file := range files {
+		if file.Name() == ".BaekJoon.yml" {
+			return true
+		}
+	}
+	return false
 }
 
 // Problem 모델
