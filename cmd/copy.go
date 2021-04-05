@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/atotto/clipboard"
@@ -37,28 +38,40 @@ func copyCode2Clipboard(args []string) {
 		color.Green.Print("\nbj cp [문제번호]")
 		os.Exit(1)
 	} else {
-		files, err := ioutil.ReadDir("./")
+		rangeFolderList, err := ioutil.ReadDir("./")
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		for _, f := range files {
-			if strings.Contains(f.Name(), args[0]) {
-				filerc, err := os.Open(f.Name() + "/" + args[0] + ".c")
+		probNum, _ := strconv.Atoi(args[0])
+
+		for _, rangeFolder := range rangeFolderList {
+			if rangeFolder.Name() == getStrRangeOfProb(probNum) {
+				files, err := ioutil.ReadDir(getStrRangeOfProb(probNum))
 				if err != nil {
 					log.Fatal(err)
 				}
-				defer filerc.Close()
+				for _, file := range files {
+					if strings.Contains(file.Name(), strconv.Itoa(probNum)) {
 
-				buf := new(bytes.Buffer)
-				buf.ReadFrom(filerc)
-				contents := buf.String()
-				clipboard.WriteAll(contents)
-				fmt.Printf("📋 '" + f.Name() + "'이(가) 클립보드에 복사되었습니다!")
-				os.Exit(1)
+						filerc, err := os.Open(getStrRangeOfProb(probNum) + "/" + file.Name() + "/solve.c")
+						if err != nil {
+							log.Fatal(err)
+						}
+						defer filerc.Close()
+						buf := new(bytes.Buffer)
+						buf.ReadFrom(filerc)
+						contents := buf.String()
+						clipboard.WriteAll(contents)
+						fmt.Printf("📋 '" + file.Name() + "'이(가) 클립보드에 복사되었습니다!")
+						os.Exit(1)
+					}
+				}
+
 			}
 
 		}
+
 		color.Error.Prompt("❗다음 문제는 존재하지 않습니다(" + args[0] + ")")
 		os.Exit(1)
 	}

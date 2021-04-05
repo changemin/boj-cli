@@ -60,7 +60,7 @@ $ bj get 1000~1100
 ```yaml
 ---
 username: {username}
-language: {language}
+extension: {languageExtension}
 ---
 
 # 아래 본문은 파일 생성시 작성되는 기본 코드
@@ -73,7 +73,7 @@ int main() {
 }
 ```
 
-~~지원가능언어 : `c`, `c++` ,`swift`, `Java`~~
+> `extension`을 통해 어떠한 언어로도 커스텀 가능
 
 ```
 /*
