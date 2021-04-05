@@ -53,7 +53,6 @@ func copyCode2Clipboard(args []string) {
 				}
 				for _, file := range files {
 					if strings.Contains(file.Name(), strconv.Itoa(probNum)) {
-
 						filerc, err := os.Open(getStrRangeOfProb(probNum) + "/" + file.Name() + "/solve.c")
 						if err != nil {
 							log.Fatal(err)
