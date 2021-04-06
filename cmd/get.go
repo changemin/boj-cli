@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	model "bj/model"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -74,7 +75,7 @@ func parseProblem(args []string) {
 }
 
 func generateProblem(num int) {
-	prob := Problem{num: num}
+	prob := model.Problem{Num: num}
 
 	response, err := http.Get("https://www.acmicpc.net/problem/" + strconv.Itoa(num))
 	if err != nil {
@@ -83,27 +84,27 @@ func generateProblem(num int) {
 	defer response.Body.Close()
 
 	if response.StatusCode == 404 {
-		color.Error.Prompt("다음 문제는 존재하지 않습니다(" + strconv.Itoa(prob.num) + ")")
+		color.Error.Prompt("다음 문제는 존재하지 않습니다(" + strconv.Itoa(prob.Num) + ")")
 	} else {
 		doc, _ := goquery.NewDocumentFromReader(response.Body)
-		prob.title = doc.Find("#problem_title").Text()
-		prob.description = strings.TrimSpace(doc.Find("#problem_description").Text())
-		prob.input = strings.TrimSpace(doc.Find("#sample-input-1").Text())
-		prob.output = strings.TrimSpace(doc.Find("#sample-output-1").Text())
+		prob.Title = doc.Find("#problem_title").Text()
+		prob.Description = strings.TrimSpace(doc.Find("#problem_description").Text())
+		prob.Input = strings.TrimSpace(doc.Find("#sample-input-1").Text())
+		prob.Output = strings.TrimSpace(doc.Find("#sample-output-1").Text())
 
 		makeProbDirAndFile(prob)
 	}
 }
 
-func makeProbDirAndFile(prob Problem) {
+func makeProbDirAndFile(prob model.Problem) {
 	if isProbExist(prob) {
-		color.Error.Prompt("다음 문제는 이미 존재합니다(" + strconv.Itoa(prob.num) + ")")
+		color.Error.Prompt("다음 문제는 이미 존재합니다(" + strconv.Itoa(prob.Num) + ")")
 	} else {
-		if _, err := os.Stat(getStrRangeOfProb(prob.num)); os.IsNotExist(err) {
-			os.Mkdir(getStrRangeOfProb(prob.num), os.ModePerm)
+		if _, err := os.Stat(getStrRangeOfProb(prob.Num)); os.IsNotExist(err) {
+			os.Mkdir(getStrRangeOfProb(prob.Num), os.ModePerm)
 		}
 
-		path := getStrRangeOfProb(prob.num) + "/" + strconv.Itoa(prob.num) + "번 - " + prob.title
+		path := getStrRangeOfProb(prob.Num) + "/" + strconv.Itoa(prob.Num) + "번 - " + prob.Title
 
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			os.Mkdir(path, os.ModePerm)
@@ -122,21 +123,21 @@ func makeProbDirAndFile(prob Problem) {
 	}
 }
 
-func isProbExist(prob Problem) bool {
+func isProbExist(prob model.Problem) bool {
 	rangeFolderList, err := ioutil.ReadDir("./")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for _, rangeFolder := range rangeFolderList {
-		if rangeFolder.Name() == getStrRangeOfProb(prob.num) {
-			files, err := ioutil.ReadDir(getStrRangeOfProb(prob.num))
+		if rangeFolder.Name() == getStrRangeOfProb(prob.Num) {
+			files, err := ioutil.ReadDir(getStrRangeOfProb(prob.Num))
 			if err != nil {
 				log.Fatal(err)
 			}
 			for _, file := range files {
-				if strings.Contains(file.Name(), strconv.Itoa(prob.num)) {
-					if filerc, _ := os.Open(getStrRangeOfProb(prob.num) + "/" + file.Name() + "/" + strconv.Itoa(prob.num) + ".c"); filerc != nil {
+				if strings.Contains(file.Name(), strconv.Itoa(prob.Num)) {
+					if filerc, _ := os.Open(getStrRangeOfProb(prob.Num) + "/" + file.Name() + "/" + strconv.Itoa(prob.Num) + ".c"); filerc != nil {
 						return true
 					}
 				}
@@ -149,19 +150,19 @@ func isProbExist(prob Problem) bool {
 	return false
 }
 
-func getProbCommentString(prob Problem) string {
+func getProbCommentString(prob model.Problem) string {
 	str := ""
 	str = str + "/*\n"
 	str = str + getCurrentDate() + "\n\n"
 	str = str + "Created By {username}\n\n"
-	str = str + strconv.Itoa(prob.num) + "번 : " + prob.num + "\n"
-	str = str + "https://www.acmicpc.net/problem/" + strconv.Itoa(prob.num) + "\n\n"
+	str = str + strconv.Itoa(prob.Num) + "번 : " + prob.Title + "\n"
+	str = str + "https://www.acmicpc.net/problem/" + strconv.Itoa(prob.Num) + "\n\n"
 	str = str + "* 문제\n\n"
-	str = str + prob.description + "\n\n"
+	str = str + prob.Description + "\n\n"
 	str = str + "* 입력\n\n"
-	str = str + prob.input + "\n\n"
+	str = str + prob.Input + "\n\n"
 	str = str + "* 출력\n\n"
-	str = str + prob.output + "\n\n"
+	str = str + prob.Output + "\n\n"
 	str = str + "*/\n\n"
 	return str
 }
