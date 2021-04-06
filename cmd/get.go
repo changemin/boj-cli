@@ -2,6 +2,7 @@ package cmd
 
 import (
 	model "bj/model"
+	utils "bj/utils"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -9,7 +10,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gookit/color"
@@ -153,7 +153,7 @@ func isProbExist(prob model.Problem) bool {
 func getProbCommentString(prob model.Problem) string {
 	str := ""
 	str = str + "/*\n"
-	str = str + getCurrentDate() + "\n\n"
+	str = str + utils.GetCurrentDate() + "\n\n"
 	str = str + "Created By {username}\n\n"
 	str = str + strconv.Itoa(prob.Num) + "번 : " + prob.Title + "\n"
 	str = str + "https://www.acmicpc.net/problem/" + strconv.Itoa(prob.Num) + "\n\n"
@@ -176,11 +176,6 @@ func getLanguageDefaultPrintHello() string {
 		return 0;
 	}`
 
-}
-
-func getCurrentDate() string {
-	dateTime := time.Now()
-	return dateTime.Format("2006-01-02")
 }
 
 func getStrRangeOfProb(num int) string {
