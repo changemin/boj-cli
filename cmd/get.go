@@ -154,7 +154,7 @@ func getProbCommentString(prob Problem) string {
 	str = str + "/*\n"
 	str = str + getCurrentDate() + "\n\n"
 	str = str + "Created By {username}\n\n"
-	str = str + strconv.Itoa(prob.num) + "번 : " + prob.title + "\n"
+	str = str + strconv.Itoa(prob.num) + "번 : " + prob.num + "\n"
 	str = str + "https://www.acmicpc.net/problem/" + strconv.Itoa(prob.num) + "\n\n"
 	str = str + "* 문제\n\n"
 	str = str + prob.description + "\n\n"
@@ -198,16 +198,4 @@ func isConfigFileExist() bool {
 		}
 	}
 	return false
-}
-
-// Problem 모델
-type Problem struct {
-	num         int
-	title       string
-	description string
-	input       string
-	output      string
-	// timeLimit   string
-	// memoryLimit string
-	// passRatio   string
 }
