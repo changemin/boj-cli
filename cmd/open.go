@@ -1,51 +1,41 @@
-/*
-Copyright © 2021 NAME HERE <EMAIL ADDRESS>
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package cmd
 
 import (
-	"fmt"
+	"bj/utils"
+	"os"
+	"strconv"
 
+	"github.com/gookit/color"
+	"github.com/skratchdot/open-golang/open"
 	"github.com/spf13/cobra"
 )
 
-// openCmd represents the open command
 var openCmd = &cobra.Command{
 	Use:   "open",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "",
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("open called")
+		openProbFolder(args)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(openCmd)
+}
 
-	// Here you will define your flags and configuration settings.
+func openProbFolder(args []string) {
+	if len(args) == 0 { // 문제 번호 입력을 안했을 경우
+		color.Error.Prompt("문제 번호를 입력해주세요")
+		color.Green.Print("\nbj get [문제번호]")
+		os.Exit(1)
+	} else {
+		num, err := strconv.Atoi(args[0])
+		if err != nil {
+			color.Error.Prompt("문제 번호를 정수로 입력해주세요")
+			color.Green.Print("\nbj get [문제번호]")
+			os.Exit(1)
+		}
+		open.Run("./" + utils.GetRangeOfProb(num))
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// openCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// openCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	}
 }

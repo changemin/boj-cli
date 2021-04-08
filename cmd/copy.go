@@ -46,14 +46,14 @@ func copyCode2Clipboard(args []string) {
 		probNum, _ := strconv.Atoi(args[0])
 
 		for _, rangeFolder := range rangeFolderList {
-			if rangeFolder.Name() == getStrRangeOfProb(probNum) {
-				files, err := ioutil.ReadDir(getStrRangeOfProb(probNum))
+			if rangeFolder.Name() == utils.GetRangeOfProb(probNum) {
+				files, err := ioutil.ReadDir(utils.GetRangeOfProb(probNum))
 				if err != nil {
 					log.Fatal(err)
 				}
 				for _, file := range files {
 					if strings.Contains(file.Name(), strconv.Itoa(probNum)) {
-						filerc, err := os.Open(getStrRangeOfProb(probNum) + "/" + file.Name() + "/solve" + utils.ReadFileExtension())
+						filerc, err := os.Open(utils.GetRangeOfProb(probNum) + "/" + file.Name() + "/solve" + utils.ReadFileExtension())
 						if err != nil {
 							log.Fatal(err)
 						}

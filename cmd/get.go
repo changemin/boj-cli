@@ -1,10 +1,9 @@
 package cmd
 
 import (
-	model "bj/model"
-	utils "bj/utils"
+	"bj/model"
+	"bj/utils"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -97,14 +96,14 @@ func generateProblem(num int) {
 }
 
 func makeProbDirAndFile(prob model.Problem) {
-	if isProbExist(prob) {
+	if utils.IsProbExist(prob.Num) {
 		color.Error.Prompt("다음 문제는 이미 존재합니다(" + strconv.Itoa(prob.Num) + ")")
 	} else {
-		if _, err := os.Stat(getStrRangeOfProb(prob.Num)); os.IsNotExist(err) {
-			os.Mkdir(getStrRangeOfProb(prob.Num), os.ModePerm)
+		if _, err := os.Stat(utils.GetRangeOfProb(prob.Num)); os.IsNotExist(err) {
+			os.Mkdir(utils.GetRangeOfProb(prob.Num), os.ModePerm)
 		}
 
-		path := getStrRangeOfProb(prob.Num) + "/" + strconv.Itoa(prob.Num) + "번 - " + prob.Title
+		path := utils.GetRangeOfProb(prob.Num) + "/" + strconv.Itoa(prob.Num) + "번 - " + prob.Title
 
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			os.Mkdir(path, os.ModePerm)
@@ -121,33 +120,6 @@ func makeProbDirAndFile(prob model.Problem) {
 		fmt.Fprintf(f1, getProbCommentString(prob))
 		fmt.Fprintf(f1, getLanguageDefaultPrintHello())
 	}
-}
-
-func isProbExist(prob model.Problem) bool {
-	rangeFolderList, err := ioutil.ReadDir("./")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for _, rangeFolder := range rangeFolderList {
-		if rangeFolder.Name() == getStrRangeOfProb(prob.Num) {
-			files, err := ioutil.ReadDir(getStrRangeOfProb(prob.Num))
-			if err != nil {
-				log.Fatal(err)
-			}
-			for _, file := range files {
-				if strings.Contains(file.Name(), strconv.Itoa(prob.Num)) {
-					if filerc, _ := os.Open(getStrRangeOfProb(prob.Num) + "/" + file.Name() + "/" + strconv.Itoa(prob.Num) + utils.ReadFileExtension()); filerc != nil {
-						return true
-					}
-				}
-			}
-
-		}
-
-	}
-
-	return false
 }
 
 func getProbCommentString(prob model.Problem) string {
@@ -186,9 +158,4 @@ func addStrEmptyLine(str *string) {
 func getLanguageDefaultPrintHello() string {
 	return ""
 
-}
-
-func getStrRangeOfProb(num int) string {
-	strNum := strconv.Itoa(num)
-	return strNum[:len(strNum)-2] + "00번~" + strNum[:len(strNum)-2] + "99번"
 }
