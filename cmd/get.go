@@ -141,16 +141,21 @@ func getProbCommentString(prob model.Problem) string {
 	addStrEmptyLine(&str)
 	addStrCommentedLine(&str, "* 문제")
 	addStrEmptyLine(&str)
-	addStrCommentedLine(&str, prob.Description)
+	addStrCommentedLine(&str, replaceNewlineWithComment(prob.Description))
 	addStrEmptyLine(&str)
 	addStrCommentedLine(&str, "* 입력")
 	addStrEmptyLine(&str)
-	addStrCommentedLine(&str, prob.Input)
+	addStrCommentedLine(&str, replaceNewlineWithComment(prob.Input))
 	addStrEmptyLine(&str)
 	addStrCommentedLine(&str, "* 출력")
 	addStrEmptyLine(&str)
-	addStrCommentedLine(&str, prob.Output)
+	addStrCommentedLine(&str, replaceNewlineWithComment(prob.Output))
 	addStrEmptyLine(&str)
+	return str
+}
+
+func replaceNewlineWithComment(str string) string {
+	str = strings.Replace(str, "\n", "\n"+utils.ReadCommentStyle()+" ", -1)
 	return str
 }
 
