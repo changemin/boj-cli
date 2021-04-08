@@ -91,6 +91,7 @@ func generateProblem(num int) {
 	} else {
 		doc, _ := goquery.NewDocumentFromReader(response.Body)
 		prob.Title = doc.Find("#problem_title").Text()
+		prob.Title = strings.Replace(prob.Title, "/", "", -1) // remove `/`
 		prob.Description = strings.TrimSpace(doc.Find("#problem_description").Text())
 		prob.Input = strings.TrimSpace(doc.Find("#sample-input-1").Text())
 		prob.Output = strings.TrimSpace(doc.Find("#sample-output-1").Text())
