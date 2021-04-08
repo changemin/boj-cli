@@ -110,13 +110,13 @@ func makeProbDirAndFile(prob model.Problem) {
 			os.Mkdir(path, os.ModePerm)
 		}
 
-		f1, err := os.Create(path + "/solve.c")
+		f1, err := os.Create(path + "/solve" + utils.ReadFileExtension())
 		if err != nil {
 			log.Print(err)
 			os.Exit(1)
 		}
 		defer f1.Close()
-		color.Info.Prompt("🎉 파일 생성 성공 - " + path + "/solve.c")
+		color.Info.Prompt("🎉 파일 생성 성공 - " + path + "/solve" + utils.ReadFileExtension())
 
 		fmt.Fprintf(f1, getProbCommentString(prob))
 		fmt.Fprintf(f1, getLanguageDefaultPrintHello())
@@ -137,7 +137,7 @@ func isProbExist(prob model.Problem) bool {
 			}
 			for _, file := range files {
 				if strings.Contains(file.Name(), strconv.Itoa(prob.Num)) {
-					if filerc, _ := os.Open(getStrRangeOfProb(prob.Num) + "/" + file.Name() + "/" + strconv.Itoa(prob.Num) + ".c"); filerc != nil {
+					if filerc, _ := os.Open(getStrRangeOfProb(prob.Num) + "/" + file.Name() + "/" + strconv.Itoa(prob.Num) + utils.ReadFileExtension()); filerc != nil {
 						return true
 					}
 				}

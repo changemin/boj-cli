@@ -1,8 +1,8 @@
 package cmd
 
 import (
+	utils "bj/utils"
 	"bytes"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -53,7 +53,7 @@ func copyCode2Clipboard(args []string) {
 				}
 				for _, file := range files {
 					if strings.Contains(file.Name(), strconv.Itoa(probNum)) {
-						filerc, err := os.Open(getStrRangeOfProb(probNum) + "/" + file.Name() + "/solve.c")
+						filerc, err := os.Open(getStrRangeOfProb(probNum) + "/" + file.Name() + "/solve" + utils.ReadFileExtension())
 						if err != nil {
 							log.Fatal(err)
 						}
@@ -62,7 +62,7 @@ func copyCode2Clipboard(args []string) {
 						buf.ReadFrom(filerc)
 						contents := buf.String()
 						clipboard.WriteAll(contents)
-						fmt.Printf("📋 '" + file.Name() + "'이(가) 클립보드에 복사되었습니다!")
+						color.Info.Println("📋 '" + file.Name() + "'이(가) 클립보드에 복사되었습니다!")
 						os.Exit(1)
 					}
 				}
