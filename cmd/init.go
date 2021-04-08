@@ -8,6 +8,7 @@ import (
 
 	"github.com/gookit/color"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var initCmd = &cobra.Command{
@@ -15,12 +16,37 @@ var initCmd = &cobra.Command{
 	Short: "백준 설정파일을 생성합니다",
 	Long:  `그렇대요.. (임시)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		generateConfigFile()
+		read()
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(initCmd)
+}
+
+func test() {
+	viper.New()
+	viper.SetConfigFile("bjConfig")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(".")
+	viper.SetDefault("username", "NAME")
+	viper.SetDefault("extension", ".c")
+	viper.WriteConfig()
+}
+
+func read() {
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
+	fileExtension := viper.Get("extension")
+	fmt.Println(fileExtension)
+	username := viper.Get("username")
+	fmt.Println(username)
+	placeholder := viper.GetString("placeholder")
+	fmt.Println(placeholder)
 }
 
 func generateConfigFile() {

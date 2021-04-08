@@ -32,7 +32,7 @@ func init() {
 }
 
 func parseProblem(args []string) {
-	if isConfigFileExist() {
+	if utils.IsConfigFileExist() {
 		if len(args) == 0 { // 문제 번호 입력을 안했을 경우
 			color.Error.Prompt("문제 번호를 입력해주세요")
 			color.Green.Print("\nbj get [문제번호]")
@@ -181,17 +181,4 @@ func getLanguageDefaultPrintHello() string {
 func getStrRangeOfProb(num int) string {
 	strNum := strconv.Itoa(num)
 	return strNum[:len(strNum)-2] + "00번~" + strNum[:len(strNum)-2] + "99번"
-}
-
-func isConfigFileExist() bool {
-	files, err := ioutil.ReadDir("./")
-	if err != nil {
-		log.Fatal(err)
-	}
-	for _, file := range files {
-		if file.Name() == ".BaekJoon.yml" {
-			return true
-		}
-	}
-	return false
 }
