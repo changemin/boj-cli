@@ -9,8 +9,10 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/briandowns/spinner"
 	"github.com/gookit/color"
 	"github.com/spf13/cobra"
 )
@@ -74,6 +76,8 @@ func parseProblem(args []string) {
 }
 
 func generateProblem(num int) {
+	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
+	s.Start()
 	prob := model.Problem{Num: num}
 
 	response, err := http.Get("https://www.acmicpc.net/problem/" + strconv.Itoa(num))
@@ -92,6 +96,8 @@ func generateProblem(num int) {
 		prob.Output = strings.TrimSpace(doc.Find("#sample-output-1").Text())
 
 		makeProbDirAndFile(prob)
+		s.Stop()
+
 	}
 }
 
