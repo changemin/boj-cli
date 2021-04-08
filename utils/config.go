@@ -31,6 +31,17 @@ func ReadUsername() string {
 	return username
 }
 
+func ReadCommentStyle() string {
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
+	err := viper.ReadInConfig()
+	if err != nil {
+		log.Println(err)
+	}
+	username := viper.GetString("comment-style")
+	return username
+}
+
 func ReadFileExtension() string {
 	viper.SetConfigName("config")
 	viper.AddConfigPath(".")

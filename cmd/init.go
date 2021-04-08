@@ -8,7 +8,6 @@ import (
 
 	"github.com/gookit/color"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var initCmd = &cobra.Command{
@@ -16,7 +15,7 @@ var initCmd = &cobra.Command{
 	Short: "백준 설정파일을 생성합니다",
 	Long:  `그렇대요.. (임시)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		read()
+		generateConfigFile()
 	},
 }
 
@@ -24,40 +23,16 @@ func init() {
 	rootCmd.AddCommand(initCmd)
 }
 
-func test() {
-	viper.New()
-	viper.SetConfigFile("bjConfig")
-	viper.SetConfigType("yaml")
-	viper.AddConfigPath(".")
-	viper.SetDefault("username", "NAME")
-	viper.SetDefault("extension", ".c")
-	viper.WriteConfig()
-}
-
-func read() {
-	viper.SetConfigName("config")
-	viper.AddConfigPath(".")
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic(err)
-	}
-	fileExtension := viper.Get("extension")
-	fmt.Println(fileExtension)
-	username := viper.Get("username")
-	fmt.Println(username)
-	placeholder := viper.GetString("placeholder")
-	fmt.Println(placeholder)
-}
-
 func generateConfigFile() {
 	username := inputUsername()
 	fileExtension := inputFileExtension()
-	f, err := os.Create(".BaekJoon.yml")
+	commentStyle := inputCommentStyle()
+	f, err := os.Create("config.yaml")
 	if err != nil {
 		fmt.Print(err)
 	}
 	defer f.Close()
-	fmt.Fprintf(f, "username: "+username+"\nextension: "+fileExtension)
+	fmt.Fprintf(f, "username: "+username+"file-extension: "+fileExtension+"comment-style: "+commentStyle)
 	color.Info.Println("설정 파일이 생성되었습니다.")
 }
 
@@ -81,4 +56,11 @@ func inputFileExtension() string {
 		}
 	}
 	return ".c"
+}
+
+func inputCommentStyle() string {
+	reader := bufio.NewReader(os.Stdin)
+	color.Green.Print("주석 : ")
+	commentStyle, _ := reader.ReadString('\n')
+	return commentStyle
 }

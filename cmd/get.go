@@ -152,29 +152,39 @@ func isProbExist(prob model.Problem) bool {
 
 func getProbCommentString(prob model.Problem) string {
 	str := ""
-	str = str + "/*\n"
-	str = str + utils.GetCurrentDate() + "\n\n"
-	str = str + "Created By " + utils.ReadUsername() + "\n\n"
-	str = str + strconv.Itoa(prob.Num) + "번 : " + prob.Title + "\n"
-	str = str + "https://www.acmicpc.net/problem/" + strconv.Itoa(prob.Num) + "\n\n"
-	str = str + "* 문제\n\n"
-	str = str + prob.Description + "\n\n"
-	str = str + "* 입력\n\n"
-	str = str + prob.Input + "\n\n"
-	str = str + "* 출력\n\n"
-	str = str + prob.Output + "\n\n"
-	str = str + "*/\n\n"
+	addStrEmptyLine(&str)
+	addStrCommentedLine(&str, utils.GetCurrentDate())
+	addStrEmptyLine(&str)
+	addStrCommentedLine(&str, "Created By "+utils.ReadUsername())
+	addStrEmptyLine(&str)
+	addStrCommentedLine(&str, strconv.Itoa(prob.Num)+"번 : "+prob.Title)
+	addStrCommentedLine(&str, "https://www.acmicpc.net/problem/"+strconv.Itoa(prob.Num))
+	addStrEmptyLine(&str)
+	addStrCommentedLine(&str, "* 문제")
+	addStrEmptyLine(&str)
+	addStrCommentedLine(&str, prob.Description)
+	addStrEmptyLine(&str)
+	addStrCommentedLine(&str, "* 입력")
+	addStrEmptyLine(&str)
+	addStrCommentedLine(&str, prob.Input)
+	addStrEmptyLine(&str)
+	addStrCommentedLine(&str, "* 출력")
+	addStrEmptyLine(&str)
+	addStrCommentedLine(&str, prob.Output)
+	addStrEmptyLine(&str)
 	return str
 }
 
+func addStrCommentedLine(str *string, substr string) {
+	*str += utils.ReadCommentStyle() + " " + substr + "\n"
+}
+
+func addStrEmptyLine(str *string) {
+	*str += utils.ReadCommentStyle() + "\n"
+}
+
 func getLanguageDefaultPrintHello() string {
-	return `#include<stdio.h>
-
-	int main() {
-		printf("Hello, World!");
-
-		return 0;
-	}`
+	return ""
 
 }
 
