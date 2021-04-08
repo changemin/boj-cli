@@ -2,8 +2,11 @@ package cmd
 
 import (
 	"bj/utils"
+	"io/ioutil"
+	"log"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/gookit/color"
 	"github.com/skratchdot/open-golang/open"
@@ -36,7 +39,18 @@ func openProbFolder(args []string) {
 			os.Exit(1)
 		} else {
 			if utils.IsProbExist(num) {
-				open.Run("./" + utils.GetRangeOfProb(num))
+				files, err := ioutil.ReadDir(utils.GetRangeOfProb(num))
+				if err != nil {
+					log.Fatal(err)
+				}
+				for _, file := range files {
+					if strings.Contains(file.Name(), strconv.Itoa(num)) {
+						if filerc, _ := os.Open(utils.GetRangeOfProb(num) + "/" + file.Name() + "/solve" + utils.ReadFileExtension()); filerc != nil {
+							open.Run("./" + utils.GetRangeOfProb(num) + "/" + file.Name())
+						}
+					}
+				}
+
 			} else {
 				color.Error.Println("다음 문제는 존재하지 않습니다.(" + args[0] + ")")
 			}

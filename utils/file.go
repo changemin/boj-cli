@@ -21,7 +21,7 @@ func IsProbExist(num int) bool {
 				log.Fatal(err)
 			}
 			for _, file := range files {
-				if strings.Contains(file.Name(), strconv.Itoa(num)) {
+				if strings.Contains(file.Name(), strconv.Itoa(num)+"번") {
 					if filerc, _ := os.Open(GetRangeOfProb(num) + "/" + file.Name() + "/solve" + ReadFileExtension()); filerc != nil {
 						return true
 					}
