@@ -60,7 +60,8 @@ $ bj get 1000~1100
 ```yaml
 ---
 username: {username}
-extension: {languageExtension}
+file-extension: {languageExtension}
+comment-style: {commentStyle}
 ---
 
 # 아래 본문은 파일 생성시 작성되는 기본 코드
