@@ -24,7 +24,7 @@ var parseCmd = &cobra.Command{
 2. bj get [문제번호] [문제번호] [문제번호] : 여러문제를 한번에 가져옵니다
 3. bj get [문제번호]~[문제번호] : 범위 내의 문제를 가져옵니다`,
 	Run: func(cmd *cobra.Command, args []string) {
-		parseProblem(args)
+		generateProblem(args)
 	},
 }
 
@@ -32,7 +32,7 @@ func init() {
 	rootCmd.AddCommand(parseCmd)
 }
 
-func parseProblem(args []string) {
+func generateProblem(args []string) {
 	if utils.IsConfigFileExist() {
 		if len(args) == 0 { // 문제 번호 입력을 안했을 경우
 			color.Error.Prompt("문제 번호를 입력해주세요")
@@ -53,7 +53,7 @@ func parseProblem(args []string) {
 				os.Exit(1)
 			}
 			for i := startNum; i <= endNum; i++ {
-				generateProblem(i)
+				parseProblem(i)
 			}
 		} else {
 			for _, strProbNum := range args {
@@ -63,7 +63,7 @@ func parseProblem(args []string) {
 					color.Green.Print("\nbj get [문제번호]")
 					os.Exit(1)
 				}
-				generateProblem(num)
+				parseProblem(num)
 			}
 		}
 
@@ -75,7 +75,7 @@ func parseProblem(args []string) {
 
 }
 
-func generateProblem(num int) {
+func parseProblem(num int) {
 	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
 	s.Start()
 	prob := model.Problem{Num: num}
@@ -96,40 +96,35 @@ func generateProblem(num int) {
 		prob.Input = strings.TrimSpace(doc.Find("#sample-input-1").Text())
 		prob.Output = strings.TrimSpace(doc.Find("#sample-output-1").Text())
 
-		makeProbDirAndFile(prob)
+		if utils.IsProbExist(prob.Num) {
+			color.Error.Prompt("다음 문제는 이미 존재합니다(" + strconv.Itoa(prob.Num) + ")")
+		} else {
+			if _, err := os.Stat(utils.GetRangeOfProb(prob.Num)); os.IsNotExist(err) {
+				os.Mkdir(utils.GetRangeOfProb(prob.Num), os.ModePerm)
+			}
+
+			path := utils.GetRangeOfProb(prob.Num) + "/" + strconv.Itoa(prob.Num) + "번 - " + prob.Title
+
+			if _, err := os.Stat(path); os.IsNotExist(err) {
+				os.Mkdir(path, os.ModePerm)
+			}
+
+			f1, err := os.Create(path + "/solve" + utils.ReadFileExtension())
+			if err != nil {
+				log.Print(err)
+				os.Exit(1)
+			}
+			defer f1.Close()
+			color.Info.Prompt("🎉 파일 생성 성공 - " + path + "/solve" + utils.ReadFileExtension())
+
+			fmt.Fprintf(f1, generateStrProbDescription(prob))
+		}
 		s.Stop()
 
 	}
 }
 
-func makeProbDirAndFile(prob model.Problem) {
-	if utils.IsProbExist(prob.Num) {
-		color.Error.Prompt("다음 문제는 이미 존재합니다(" + strconv.Itoa(prob.Num) + ")")
-	} else {
-		if _, err := os.Stat(utils.GetRangeOfProb(prob.Num)); os.IsNotExist(err) {
-			os.Mkdir(utils.GetRangeOfProb(prob.Num), os.ModePerm)
-		}
-
-		path := utils.GetRangeOfProb(prob.Num) + "/" + strconv.Itoa(prob.Num) + "번 - " + prob.Title
-
-		if _, err := os.Stat(path); os.IsNotExist(err) {
-			os.Mkdir(path, os.ModePerm)
-		}
-
-		f1, err := os.Create(path + "/solve" + utils.ReadFileExtension())
-		if err != nil {
-			log.Print(err)
-			os.Exit(1)
-		}
-		defer f1.Close()
-		color.Info.Prompt("🎉 파일 생성 성공 - " + path + "/solve" + utils.ReadFileExtension())
-
-		fmt.Fprintf(f1, getProbCommentString(prob))
-		fmt.Fprintf(f1, getLanguageDefaultPrintHello())
-	}
-}
-
-func getProbCommentString(prob model.Problem) string {
+func generateStrProbDescription(prob model.Problem) string {
 	str := ""
 	addStrEmptyLine(&str)
 	addStrCommentedLine(&str, utils.GetCurrentDate())
@@ -165,9 +160,4 @@ func addStrCommentedLine(str *string, substr string) {
 
 func addStrEmptyLine(str *string) {
 	*str += utils.ReadCommentStyle() + "\n"
-}
-
-func getLanguageDefaultPrintHello() string {
-	return ""
-
 }
