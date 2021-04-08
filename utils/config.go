@@ -3,6 +3,8 @@ package utils
 import (
 	"io/ioutil"
 	"log"
+
+	"github.com/spf13/viper"
 )
 
 func IsConfigFileExist() bool {
@@ -16,4 +18,34 @@ func IsConfigFileExist() bool {
 		}
 	}
 	return false
+}
+
+func ReadUsername() string {
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
+	return viper.GetString("username")
+}
+
+func ReadFileExtension() string {
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
+	return viper.GetString("extension")
+}
+
+func ReadPlaceholder() string {
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
+	return viper.GetString("placeholder")
 }

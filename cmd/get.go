@@ -154,7 +154,7 @@ func getProbCommentString(prob model.Problem) string {
 	str := ""
 	str = str + "/*\n"
 	str = str + utils.GetCurrentDate() + "\n\n"
-	str = str + "Created By {username}\n\n"
+	str = str + "Created By " + utils.ReadUsername() + "\n\n"
 	str = str + strconv.Itoa(prob.Num) + "번 : " + prob.Title + "\n"
 	str = str + "https://www.acmicpc.net/problem/" + strconv.Itoa(prob.Num) + "\n\n"
 	str = str + "* 문제\n\n"
