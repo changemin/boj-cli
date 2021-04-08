@@ -25,9 +25,10 @@ func ReadUsername() string {
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
-	return viper.GetString("username")
+	username := viper.GetString("username")
+	return username
 }
 
 func ReadFileExtension() string {
@@ -37,7 +38,7 @@ func ReadFileExtension() string {
 	if err != nil {
 		panic(err)
 	}
-	return viper.GetString("extension")
+	return viper.GetString("file-extension")
 }
 
 func ReadPlaceholder() string {
