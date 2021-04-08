@@ -1,4 +1,4 @@
-# BaekJoon CLI
+# BaekJoon Online Judge CLI
 
 ## 설치하기
 
