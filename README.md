@@ -1,11 +1,12 @@
 # BaekJoon Online Judge CLI
+![백준 로고](imgs/logo.png)
 
 ## 설치하기
 
 ```
-git clone https://github.com/changemin/BaekJoon-CLI
+git clone https://github.com/Changemin/boj-cli
 
-cd BaekJoon-CLI
+cd boj-cli
 
 go install bj
 ```
@@ -22,8 +23,7 @@ go install bj
 ## 활용예제
 
 ```
-$ bj get 1000 1001 1002 1003 1004
-$ bj get 1000~1100
+$ bj get 1000~1005 2000~2005
 ```
 
 ```
@@ -88,5 +88,3 @@ comment-style: {commentStyle}
 // 3
 //
 ```
-
-
