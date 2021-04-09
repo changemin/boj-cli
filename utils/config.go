@@ -7,14 +7,18 @@ import (
 	"github.com/spf13/viper"
 )
 
-func IsConfigFileExist() bool {
+func ValidateConfigFile() bool {
 	files, err := ioutil.ReadDir("./")
 	if err != nil {
 		log.Fatal(err)
 	}
 	for _, file := range files {
 		if file.Name() == "config.yaml" {
-			return true
+			if ReadUsername() != "" && ReadCommentStyle() != "" && ReadFileExtension() != "" {
+				return true
+			} else {
+				return false
+			}
 		}
 	}
 	return false

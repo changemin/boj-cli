@@ -31,7 +31,7 @@ func init() {
 }
 
 func generateProblem(args []string) {
-	if utils.IsConfigFileExist() {
+	if utils.ValidateConfigFile() {
 		if len(args) == 0 { // 문제 번호 입력을 안했을 경우
 			color.Error.Prompt("문제 번호를 입력해주세요")
 			color.Green.Print("\nbj get [문제번호]")
@@ -70,7 +70,7 @@ func generateProblem(args []string) {
 
 		// TODO: - table 파싱
 	} else {
-		color.Error.Println("설정 파일이 존재하지 않습니다.")
+		color.Error.Println("설정 파일이 존재하지 않거나 완벽히 구성되지 못했습니다.")
 		color.Info.Println("\nbj init 명령어로 파일을 생성하세요")
 	}
 
