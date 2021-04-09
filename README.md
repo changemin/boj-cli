@@ -17,6 +17,7 @@ go install bj
 |`bj init`|백준 WorkSpace를 생성합니다|
 |`bj get [문제번호]`|문제를 Parse하여 WorkSpace안에 파일을 생성합니다|
 |`bj cp [문제번호]`|작성된 소스코드를 클립보드에 복사합니다.|
+|`bj open [문제번호]`|문제가 저장되어 있는 폴더를 엽니다.|
 
 ## 활용예제
 
@@ -56,48 +57,36 @@ $ bj get 1000~1100
  ┗ 📜.BaekJoon.yml
 ```
 
-## ~~Config 파일~~
+## BjConfig
 ```yaml
----
 username: {username}
 file-extension: {languageExtension}
 comment-style: {commentStyle}
----
-
-# 아래 본문은 파일 생성시 작성되는 기본 코드
-import<stdio.h>
-
-int main() {
-    print("Hello World!");
-
-    return 0
-}
 ```
 
 > `extension`을 통해 어떠한 언어로도 커스텀 가능
 
 ```
-/*
-2021-03-31
-
-Created By {username}
-
-1000번 : A+B
-https://www.acmicpc.net/problem/1000
-
-* 문제
-
-두 정수 A와 B를 입력받은 다음, A+B를 출력하는 프로그램을 작성하시오.
-
-* 입력
-
-1 2
-
-* 출력
-
-3
-
-*/
+//
+// 2021-04-08
+//
+// Created By 변경민
+//
+// 1000번 : A+B
+// https://www.acmicpc.net/problem/1000
+//
+// * 문제
+//
+// 두 정수 A와 B를 입력받은 다음, A+B를 출력하는 프로그램을 작성하시오.
+//
+// * 입력
+//
+// 1 2
+//
+// * 출력
+//
+// 3
+//
 ```
 
 
