@@ -38,32 +38,35 @@ func generateProblem(args []string) {
 			color.Error.Prompt("문제 번호를 입력해주세요")
 			color.Green.Print("\nbj get [문제번호]")
 			os.Exit(1)
-		} else if strings.Contains(args[0], "~") {
-			offset := strings.Split(args[0], "~")
-			if len(offset) > 2 {
-				color.Error.Prompt("정확한 범위를 입력하세요")
-				color.Green.Print("\nbj get [문제번호]~[문제번호]")
-				os.Exit(1)
-			}
-			startNum, _ := strconv.Atoi(offset[0])
-			endNum, _ := strconv.Atoi(offset[1])
-			if startNum > endNum {
-				color.Error.Prompt("범위는 1보다 커야 합니다.")
-				color.Green.Print("\nbj get [문제번호]~[문제번호]")
-				os.Exit(1)
-			}
-			for i := startNum; i <= endNum; i++ {
-				parseProblem(i)
-			}
 		} else {
-			for _, strProbNum := range args {
-				num, err := strconv.Atoi(strProbNum)
-				if err != nil {
-					color.Error.Prompt("문제 번호를 정수로 입력해주세요")
-					color.Green.Print("\nbj get [문제번호]")
-					os.Exit(1)
+			for _, arg := range args {
+				if strings.Contains(arg, "~") {
+					offset := strings.Split(args[0], "~")
+					if len(offset) > 2 {
+						color.Error.Prompt("정확한 범위를 입력하세요")
+						color.Green.Print("\nbj get [문제번호]~[문제번호]")
+						os.Exit(1)
+					}
+					startNum, _ := strconv.Atoi(offset[0])
+					endNum, _ := strconv.Atoi(offset[1])
+					if startNum > endNum {
+						color.Error.Prompt("범위는 1보다 커야 합니다.")
+						color.Green.Print("\nbj get [문제번호]~[문제번호]")
+						os.Exit(1)
+					}
+					for i := startNum; i <= endNum; i++ {
+						parseProblem(i)
+					}
+				} else {
+					num, err := strconv.Atoi(arg)
+					if err != nil {
+						color.Error.Prompt("문제 번호를 정수로 입력해주세요")
+						color.Green.Print("\nbj get [문제번호]")
+						os.Exit(1)
+					}
+					parseProblem(num)
 				}
-				parseProblem(num)
+
 			}
 		}
 
