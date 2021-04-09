@@ -15,8 +15,8 @@ import (
 
 var openCmd = &cobra.Command{
 	Use:   "open",
-	Short: "",
-	Long:  ``,
+	Short: "문제가 저장된 폴더를 엽니다.",
+	Long:  `bj open [문제번호]로 폴더를 엽니다.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		openProbFolder(args)
 	},

@@ -13,8 +13,8 @@ var rootCmd = &cobra.Command{
 	Use:   "bj",
 	Short: "BaekJoon-CLI",
 	Long: `백준 문제풀이 및 파일 관리를 도와줍니다
-	
-			https://github.com/Changemin/BaekJoon-CLI`,
+
+https://github.com/Changemin/boj-cli 를 참고하세요 👨‍🏫`,
 }
 
 func Execute() {

@@ -17,8 +17,8 @@ import (
 // cpCmd represents the cp command
 var cpCmd = &cobra.Command{
 	Use:   "cp",
-	Short: "작성한 코드를 클립보드에 카피합니다.",
-	Long:  ``,
+	Short: "작성한 코드를 클립보드에 복사합니다.",
+	Long:  `bj cp 명령어를 통해 코드를 복사하고, 쉽게 제출할 수 있습니다.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		copyCode2Clipboard(args)
 	},
