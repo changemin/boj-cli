@@ -40,7 +40,7 @@ func generateProblem(args []string) {
 			os.Exit(1)
 		} else {
 			for _, arg := range args {
-				if strings.Contains(arg, "~") {
+				if isRange(arg) {
 					offset := strings.Split(args[0], "~")
 					if len(offset) > 2 {
 						color.Error.Prompt("정확한 범위를 입력하세요")
@@ -76,6 +76,10 @@ func generateProblem(args []string) {
 		color.Info.Println("\nbj init 명령어로 파일을 생성하세요")
 	}
 
+}
+
+func isRange(arg string) bool {
+	return strings.Contains(arg, "~")
 }
 
 func parseProblem(num int) {

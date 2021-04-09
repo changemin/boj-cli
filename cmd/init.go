@@ -32,7 +32,7 @@ func generateConfigFile() {
 		fmt.Print(err)
 	}
 	defer f.Close()
-	fmt.Fprintf(f, "username: "+username+"file-extension: "+fileExtension+"comment-style: "+commentStyle)
+	fmt.Fprintf(f, "username: "+username+"file-extension: "+fileExtension+"comment-style: \""+strings.TrimSpace(commentStyle)+"\"")
 	color.Info.Println("설정 파일이 생성되었습니다.")
 }
 
@@ -46,8 +46,8 @@ func inputUsername() string {
 func inputFileExtension() string {
 	reader := bufio.NewReader(os.Stdin)
 	for true {
-		color.Green.Print("파일 확장자를 입력해주세요 ex) .c, .java")
-		color.Green.Print("\n>>> ")
+		color.Green.Println("파일 확장자를 입력해주세요 ex) .c, .java")
+		color.Green.Print(">>> ")
 		input, _ := reader.ReadString('\n')
 		if strings.Contains(input, ".") {
 			return input
@@ -60,7 +60,8 @@ func inputFileExtension() string {
 
 func inputCommentStyle() string {
 	reader := bufio.NewReader(os.Stdin)
-	color.Green.Print("주석 : ")
+	color.Green.Println("주석 형식을 입력해주세요 ex) //, #")
+	color.Green.Print(">>> ")
 	commentStyle, _ := reader.ReadString('\n')
 	return commentStyle
 }
