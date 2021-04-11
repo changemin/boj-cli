@@ -1,7 +1,7 @@
-# BaekJoon Online Judge File Management ToolC
+# BaekJoon Online Judge File Management Tool
 ![백준 로고](imgs/logo.png)
 
-## 계기
+## 만들게된 계기 
 
 적지 않은 사람들이 자신이 해결한 백준 문제를 깃허브와 같은 저장소에 올리는 것을 보았다.
 하지만 체계적으로 파일을 업로드하기 위해서는 매번 폴더, 파일을 생성하고 이름을 바꾸는 등의 반복적인 프로세스를 간단하게 해결해보고 싶었다. 
