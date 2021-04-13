@@ -29,14 +29,4 @@ func init() {
 }
 
 func initConfig() {
-	// viper.SetConfigName("config")
-	// viper.AddConfigPath(".")
-	// err := viper.ReadInConfig()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// fileExtension := viper.Get("extension")
-	// fmt.Println(fileExtension)
-	// username := viper.Get("username")
-	// fmt.Println(username)
 }

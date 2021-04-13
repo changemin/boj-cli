@@ -13,7 +13,7 @@ func ValidateConfigFile() bool {
 		log.Fatal(err)
 	}
 	for _, file := range files {
-		if file.Name() == "config.yaml" {
+		if file.Name() == "bjConfig.yaml" {
 			if ReadUsername() != "" && ReadCommentStyle() != "" && ReadFileExtension() != "" {
 				return true
 			} else {
@@ -25,7 +25,7 @@ func ValidateConfigFile() bool {
 }
 
 func ReadUsername() string {
-	viper.SetConfigName("config")
+	viper.SetConfigName("bjConfig")
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()
 	if err != nil {
@@ -36,7 +36,7 @@ func ReadUsername() string {
 }
 
 func ReadCommentStyle() string {
-	viper.SetConfigName("config")
+	viper.SetConfigName("bjConfig")
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()
 	if err != nil {
@@ -47,7 +47,7 @@ func ReadCommentStyle() string {
 }
 
 func ReadFileExtension() string {
-	viper.SetConfigName("config")
+	viper.SetConfigName("bjConfig")
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()
 	if err != nil {
@@ -57,7 +57,7 @@ func ReadFileExtension() string {
 }
 
 func ReadPlaceholder() string {
-	viper.SetConfigName("config")
+	viper.SetConfigName("bjConfig")
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()
 	if err != nil {

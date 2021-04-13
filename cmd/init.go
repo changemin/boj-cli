@@ -13,7 +13,7 @@ import (
 var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "BOJ CLI 설정파일을 생성합니다.",
-	Long:  `BojConfig.yaml 파일을 생성합니다.`,
+	Long:  `bjConfig.yaml 파일을 생성합니다.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		generateConfigFile()
 	},
@@ -27,7 +27,7 @@ func generateConfigFile() {
 	username := inputUsername()
 	fileExtension := inputFileExtension()
 	commentStyle := inputCommentStyle()
-	f, err := os.Create("config.yaml")
+	f, err := os.Create("bjConfig.yaml")
 	if err != nil {
 		fmt.Print(err)
 	}
