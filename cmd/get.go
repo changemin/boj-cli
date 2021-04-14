@@ -132,9 +132,7 @@ func parseProblem(num int) {
 func generateStrProbDescription(prob model.Problem) string {
 	str := ""
 	addStrEmptyLine(&str)
-	addStrCommentedLine(&str, utils.GetCurrentDate())
-	addStrEmptyLine(&str)
-	addStrCommentedLine(&str, "Created By "+utils.ReadUsername())
+	addStrCommentedLine(&str, "Created By "+utils.ReadUsername()+" on "+utils.GetCurrentDate())
 	addStrEmptyLine(&str)
 	addStrCommentedLine(&str, strconv.Itoa(prob.Num)+"번 : "+prob.Title)
 	addStrCommentedLine(&str, "https://www.acmicpc.net/problem/"+strconv.Itoa(prob.Num))
