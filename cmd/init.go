@@ -38,6 +38,11 @@ func generateConfigFile() {
 	fmt.Fprintf(f, "comment-style: \""+strings.TrimSpace(commentStyle)+"\"\n")
 	if useReadme == true {
 		fmt.Fprintf(f, "use-readme: true" )
+		readme, err := os.Create("README.md")
+		if err != nil {
+			fmt.Print(err)
+		}
+		defer readme.Close()
 	} else {
 		fmt.Fprintf(f, "use-readme: false")
 	}
