@@ -27,13 +27,23 @@ func generateConfigFile() {
 	username := inputUsername()
 	fileExtension := inputFileExtension()
 	commentStyle := inputCommentStyle()
+	useReadme := inputUseReadme()
 	f, err := os.Create("bjConfig.yaml")
 	if err != nil {
 		fmt.Print(err)
 	}
 	defer f.Close()
-	fmt.Fprintf(f, "username: "+username+"file-extension: "+fileExtension+"comment-style: \""+strings.TrimSpace(commentStyle)+"\"")
-	color.Info.Println("설정 파일이 생성되었습니다.")
+	fmt.Fprintf(f, "username: "+username)
+	fmt.Fprintf(f, "file-extension: "+fileExtension)
+	fmt.Fprintf(f, "comment-style: \""+strings.TrimSpace(commentStyle)+"\"\n")
+	if useReadme == true {
+		fmt.Fprintf(f, "use-readme: true" )
+	} else {
+		fmt.Fprintf(f, "use-readme: false")
+	}
+	
+
+	color.Info.Println("\n🎉 설정 파일이 생성되었습니다.")
 }
 
 func inputUsername() string {
@@ -46,21 +56,38 @@ func inputUsername() string {
 func inputFileExtension() string {
 	reader := bufio.NewReader(os.Stdin)
 	for true {
-		color.Green.Println("파일 확장자를 입력해주세요 ex) .c, .java")
+		color.Green.Println("\n파일 확장자를 입력해주세요 ex) .c, .java")
 		color.Green.Print(">>> ")
 		input, _ := reader.ReadString('\n')
 		if strings.Contains(input, ".") {
 			return input
 		} else {
-			color.Info.Println(".c, .java 와 같은 형식이어야 합니다.")
+			color.Info.Println("\n.c, .java 와 같은 형식이어야 합니다.")
 		}
 	}
 	return ".c"
 }
 
+func inputUseReadme() bool {
+	reader := bufio.NewReader(os.Stdin)
+	for true {
+		color.Green.Println("\nReadme를 사용하시겠습니까? (y/n)")
+		color.Green.Print(">>> ")
+		input, _ := reader.ReadString('\n')
+		if input == "y\n" || input == "Y\n" {
+			return true
+		} else if input == "n\n" || input == "N\n" {
+			return false
+		} else {
+			color.Info.Println("y 또는 n을 입력해주세요")
+		}
+	}
+	return false
+}
+
 func inputCommentStyle() string {
 	reader := bufio.NewReader(os.Stdin)
-	color.Green.Println("주석 형식을 입력해주세요 ex) //, #")
+	color.Green.Println("\nrud주석 형식을 입력해주세요 ex) //, #")
 	color.Green.Print(">>> ")
 	commentStyle, _ := reader.ReadString('\n')
 	return commentStyle
