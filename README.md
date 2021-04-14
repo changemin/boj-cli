@@ -25,6 +25,7 @@ go install bj
 |`bj get [문제번호]`|문제를 Parse하여 WorkSpace안에 파일을 생성합니다|
 |`bj cp [문제번호]`|작성된 소스코드를 클립보드에 복사합니다.|
 |`bj open [문제번호]`|문제가 저장되어 있는 폴더를 엽니다.|
+|`bj solve [문제번호]`|푼 문제로 표기합니다.|
 
 ## 활용예제
 
@@ -68,15 +69,28 @@ $ bj get 1000~1005 2000~2005
 username: {username}
 file-extension: {languageExtension}
 comment-style: {commentStyle}
+use-readme: true
 ```
 
 > `extension`을 통해 어떠한 언어로도 커스텀 가능
 
+## README
+
+```markdown
+### 맞은 문제
+
+1000 1001 1002 1003 1004
+
+### 시도했지만 맞지 못한 문제
+
+2344 5209 7097 78878 
+
+```
+
+
 ```
 //
-// 2021-04-08
-//
-// Created By 변경민
+// Created By 변경민 on 2021-04-08
 //
 // 1000번 : A+B
 // https://www.acmicpc.net/problem/1000
