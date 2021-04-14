@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	utils "bj/utils"
 	"bufio"
 	"fmt"
 	"os"
@@ -37,16 +38,11 @@ func generateConfigFile() {
 	fmt.Fprintf(f, "file-extension: "+fileExtension)
 	fmt.Fprintf(f, "comment-style: \""+strings.TrimSpace(commentStyle)+"\"\n")
 	if useReadme == true {
-		fmt.Fprintf(f, "use-readme: true" )
-		readme, err := os.Create("README.md")
-		if err != nil {
-			fmt.Print(err)
-		}
-		defer readme.Close()
+		fmt.Fprintf(f, "use-readme: true")
+		utils.CreateReadme()
 	} else {
 		fmt.Fprintf(f, "use-readme: false")
 	}
-	
 
 	color.Info.Println("\n🎉 설정 파일이 생성되었습니다.")
 }
@@ -92,7 +88,7 @@ func inputUseReadme() bool {
 
 func inputCommentStyle() string {
 	reader := bufio.NewReader(os.Stdin)
-	color.Green.Println("\nrud주석 형식을 입력해주세요 ex) //, #")
+	color.Green.Println("\n주석 형식을 입력해주세요 ex) //, #")
 	color.Green.Print(">>> ")
 	commentStyle, _ := reader.ReadString('\n')
 	return commentStyle
