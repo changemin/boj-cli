@@ -5,13 +5,11 @@ import (
 	"bj/utils"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"strconv"
 	"strings"
 	"time"
 
-	"github.com/PuerkitoBio/goquery"
 	"github.com/briandowns/spinner"
 	"github.com/gookit/color"
 	"github.com/spf13/cobra"
@@ -83,50 +81,37 @@ func isRange(arg string) bool {
 func parseProblem(num int) {
 	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
 	s.Start()
-	prob := model.Problem{Num: num}
 
-	response, err := http.Get("https://www.acmicpc.net/problem/" + strconv.Itoa(num))
-	if err != nil {
-		panic(err)
-	}
-	defer response.Body.Close()
+	prob := model.Num2Prob(num)
 
-	if response.StatusCode == 404 {
-		color.Error.Prompt("다음 문제는 존재하지 않습니다(" + strconv.Itoa(prob.Num) + ")")
+	if utils.IsProbExist(num) {
+		color.Error.Prompt("다음 문제는 이미 존재합니다(" + strconv.Itoa(prob.Num) + ")")
 	} else {
-		doc, _ := goquery.NewDocumentFromReader(response.Body)
-		prob.Title = doc.Find("#problem_title").Text()
-		prob.Title = strings.Replace(prob.Title, "/", "", -1) // remove `/`
-		prob.Description = strings.TrimSpace(doc.Find("#problem_description").Text())
-		prob.Input = strings.TrimSpace(doc.Find("#sample-input-1").Text())
-		prob.Output = strings.TrimSpace(doc.Find("#sample-output-1").Text())
+		if _, err := os.Stat(utils.GetRangeOfProb(prob.Num)); os.IsNotExist(err) {
+			os.Mkdir(utils.GetRangeOfProb(prob.Num), os.ModePerm)
+		}
 
-		if utils.IsProbExist(prob.Num) {
-			color.Error.Prompt("다음 문제는 이미 존재합니다(" + strconv.Itoa(prob.Num) + ")")
-		} else {
-			if _, err := os.Stat(utils.GetRangeOfProb(prob.Num)); os.IsNotExist(err) {
-				os.Mkdir(utils.GetRangeOfProb(prob.Num), os.ModePerm)
-			}
+		path := utils.GetRangeOfProb(prob.Num) + "/" + strconv.Itoa(prob.Num) + "번 - " + prob.Title
 
-			path := utils.GetRangeOfProb(prob.Num) + "/" + strconv.Itoa(prob.Num) + "번 - " + prob.Title
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			os.Mkdir(path, os.ModePerm)
+		}
 
-			if _, err := os.Stat(path); os.IsNotExist(err) {
-				os.Mkdir(path, os.ModePerm)
-			}
+		f1, err := os.Create(path + "/solve" + utils.ReadFileExtension())
+		if err != nil {
+			log.Print(err)
+			os.Exit(1)
+		}
 
-			f1, err := os.Create(path + "/solve" + utils.ReadFileExtension())
-			if err != nil {
-				log.Print(err)
-				os.Exit(1)
-			}
-			defer f1.Close()
+		if prob.Title != "" {
+			utils.AddTriedProb(num)
 			color.Info.Prompt("🎉 파일 생성 성공 - " + path + "/solve" + utils.ReadFileExtension())
 
 			fmt.Fprintf(f1, generateStrProbDescription(prob))
 		}
-		s.Stop()
-
+		defer f1.Close()
 	}
+	s.Stop()
 }
 
 func generateStrProbDescription(prob model.Problem) string {
