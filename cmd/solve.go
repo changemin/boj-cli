@@ -37,36 +37,31 @@ func markProbAsSolved(args []string) {
 			os.Exit(1)
 		} else {
 			utils.AddSolvedProb(num)
-			executeGitPush()
+			executeGitPush(num)
 		}
 	}
 }
 
-func executeGitPush() {
-	cmd := exec.Command("git", "add", ".")
+func executeGitPush(num int) {
+	gitAdd := exec.Command("git", "add", ".")
+	gitCommit := exec.Command("git", "commit", "-m", "Solve "+strconv.Itoa(num))
+	gitPush := exec.Command("git", "push")
 
-	output, err := cmd.Output()
-
+	output, err := gitAdd.Output()
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Println(string(output))
 	}
 
-	cmd = exec.Command("git", "commit", "-m", "Solve "+strconv.Itoa(num))
-
-	output, err = cmd.Output()
-
+	output, err = gitCommit.Output()
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Println(string(output))
 	}
 
-	cmd = exec.Command("git", "push")
-
-	output, err = cmd.Output()
-
+	output, err = gitPush.Output()
 	if err != nil {
 		fmt.Println(err)
 	} else {
