@@ -25,7 +25,7 @@ go install bj
 |`bj get [문제번호]`|문제를 Parse하여 WorkSpace안에 파일을 생성합니다|
 |`bj cp [문제번호]`|작성된 소스코드를 클립보드에 복사합니다.|
 |`bj open [문제번호]`|문제가 저장되어 있는 폴더를 엽니다.|
-|`bj solve [문제번호]`|푼 문제로 표기합니다.|
+|`bj solve [문제번호]`|푼 문제로 표기하고, PUSH합니다|
 
 ## 활용예제
 
@@ -76,17 +76,9 @@ use-readme: true
 
 ## README
 
-```markdown
-### 맞은 문제
+![README 예시](imgs/readme-example.png)
 
-1000 1001 1002 1003 1004
-
-### 시도했지만 맞지 못한 문제
-
-2344 5209 7097 78878 
-
-```
-
+> `bj solve [문제번호]` 를 사용하면 Git에 PUSH함과 동시에 다음과 같은 README를 생성(업데이트) 해줍니다.
 
 ```
 //
