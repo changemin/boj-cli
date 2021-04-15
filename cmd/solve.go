@@ -16,7 +16,12 @@ var solveCmd = &cobra.Command{
 	Short: "맞은 문제로 표시합니다.",
 	Long:  `맞은 문제로 표시합니다.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		markProbAsSolved(args)
+		if utils.ReadUseReadme() {
+			markProbAsSolved(args)
+		} else {
+			color.Error.Println("use-readme를 활성화하셔야 사용하실 수 있습니다.")
+		}
+
 	},
 }
 

@@ -65,3 +65,13 @@ func ReadPlaceholder() string {
 	}
 	return viper.GetString("placeholder")
 }
+
+func ReadUseReadme() bool {
+	viper.SetConfigName("bjConfig")
+	viper.AddConfigPath(".")
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
+	return viper.GetBool("use-readme")
+}
