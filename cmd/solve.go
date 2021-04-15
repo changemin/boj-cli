@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"bj/utils"
+	"fmt"
 	"os"
+	"os/exec"
 	"strconv"
 
 	"github.com/gookit/color"
@@ -35,7 +37,39 @@ func markProbAsSolved(args []string) {
 			os.Exit(1)
 		} else {
 			utils.AddSolvedProb(num)
-			// commit
+			executeGitPush()
 		}
+	}
+}
+
+func executeGitPush() {
+	cmd := exec.Command("git", "add", ".")
+
+	output, err := cmd.Output()
+
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(string(output))
+	}
+
+	cmd = exec.Command("git", "commit", "-m", "Solve "+strconv.Itoa(num))
+
+	output, err = cmd.Output()
+
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(string(output))
+	}
+
+	cmd = exec.Command("git", "push")
+
+	output, err = cmd.Output()
+
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(string(output))
 	}
 }
